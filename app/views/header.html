@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{.title}}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+	{{if .isDesktopMode}}
+		<meta name="viewport" content="width=1024">
+	{{else}}
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{{end}}
+
+	<link href="/public/css/bootstrap.min.css" rel="stylesheet">
+	<link href="/public/css/bootstrap-theme.min.css" rel="stylesheet">
+
+	<link href="/public/css/main.css" rel="stylesheet">
+	{{range .moreStyles}}
+		<link rel="stylesheet" type="text/css" href="{{.}}">
+	{{end}}
+
+	<script src="/public/js/jquery-1.11.0.min.js"></script>
+	{{range .moreScripts}}
+		<script src="{{.}}" type="text/javascript" charset="utf-8"></script>
+	{{end}}
+</head>
+<body>
+
+{{if .isDesktopMode}}
+	<div id="viewswitch_mobile">
+		<div class="container">
+			<small>
+				<a href="{{url "Application.SwitchToMobile"}}" style="color:#EEE;font-weight:bold;">SWITCH BACK TO MOBILE
+					VERSION</a>
+			</small>
+		</div>
+	</div>
+	<div class="viewswitch_contentspacer_top">&nbsp;</div>
+{{end}}
+
+<div class="navbar navbar-inverse navbar-fixed-top" {{if .isDesktopMode}}style="margin-top:160px"{{end}}
+		 role="navigation">
+	<div class="container">
+		<div class="navbar-header">
+
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#header-pages-content">
+				<span class="sr-only">Pages</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#header-user-content"
+							style="height: 34px;">
+				<span class="sr-only">Social</span>
+				<span class="glyphicon glyphicon-user" style="color: #eeeeee;"></span>
+			</button>
+			<a href="{{url "Application.Search"}}" class="navbar-toggle">
+				<span class="sr-only">Find People</span>
+				<span class="glyphicon glyphicon-plus" style="color: #eeeeee;"></span>
+			</a>
+			<a class="navbar-brand" href="/" style="color: #EEE">
+				{{.AppName}}
+				{{if eq .RunMode "test"}}
+					<small>TEST MODE</small>
+				{{else if eq .RunMode "dev"}}
+					<small>DEV MODE</small>
+				{{end}}
+			</a>
+		</div>
+		<div class="collapse navbar-collapse pull-left" id="header-pages-content">
+			<ul class="nav navbar-nav">
+				<li{{if eq .action "application/index"}} class="active"{{end}}><a href="/">Home</a></li>
+				<li{{if eq .action "application/about"}} class="active"{{end}}><a href="/about">About</a></li>
+				<li{{if eq .action "application/contact"}} class="active"{{end}}><a href="/contact">Contact</a></li>
+			</ul>
+		</div>
+		<div class="collapse navbar-collapse pull-right" id="header-user-content">
+			<ul class="nav navbar-nav navbar-right">
+				{{if .user}}
+					<li class="active" class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown" style="padding-bottom: 10px;">
+							<div class="media">
+								<div class="media-body">
+									<div class="media-heading">
+										<img class="img-rounded" src="{{.user.PhotoUrl}}" alt="Profile Photo" width="20" height="20"
+												 style="border: 1px solid #666; margin-top: -4px; margin-right: 4px;">
+										{{.user.Name}}
+										<span class="caret"></span>
+									</div>
+								</div>
+							</div>
+						</a>
+
+						<ul class="dropdown-menu">
+							<li><a href="{{url "Profile.Show" .user.UserName}}">View Profile</a></li>
+							<li><a href="{{url "Profile.Settings" .user.UserName}}">Edit Profile</a></li>
+							<li class="divider"></li>
+							<li><a href="{{url "Account.Logout"}}">Logout</a></li>
+						</ul>
+					</li>
+				{{else}}
+					<li{{if eq .action "account/login"}} class="active"{{end}}><a href="{{url "Account.Login"}}">Sign-in</a></li>
+					<li{{if eq .action "account/register"}} class="active"{{end}}><a
+										href="{{url "Account.Register"}}">Register</a></li>
+				{{end}}
+			</ul>
+		</div>
+		<div class="collapse navbar-collapse 	pull-right">
+			<ul class="nav navbar-nav navbar-right">
+				<li{{if eq .action "application/search"}} class="active"{{end}}><a href="{{url "Application.Search"}}"
+																																					 style="margin:0 15px;">+ Find People</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div class="container" id="content">
+
+	{{template "flash.html" .}}

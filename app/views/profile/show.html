@@ -1,0 +1,60 @@
+{{append . "moreScripts" "/public/js/social/follow.js"}}
+
+{{set . "action" "profile/show"}}
+
+{{template "header.html" .}}
+
+{{template "profile/header.html" .}}
+
+{{if .profile.Description }}
+
+	<h3>More about me</h3>
+
+	<div class="description">{{.profile.Description}}</div>
+
+{{end}}
+
+<hr>
+
+<h3>Posts</h3>
+
+{{$isOwner := .isOwner}}
+{{$userName := .profile.UserName}}
+
+{{ if .posts }}
+
+	<ul class="posts">
+		{{range .posts}}
+			<li class="post">
+				<a href="{{url "Post.Show" $userName .PostId}}">{{.Title}}</a>
+
+				{{if $isOwner}}
+
+					[
+					<a href="{{url "Post.Edit" $userName .PostId}}">Edit</a>
+					|
+					<a href="{{url "Post.Remove" $userName .PostId}}">Delete</a>
+					]
+
+				{{end}}
+			</li>
+		{{end}}
+	</ul>
+
+{{ else }}
+
+	<p><em>No posts</em></p>
+
+{{ end }}
+
+{{if $isOwner}}
+
+	<hr>
+
+	<p>
+		<a href="{{url "Post.Create" $userName}}">Create New Post</a>
+	</p>
+
+{{end}}
+
+{{template "footer.html" .}}

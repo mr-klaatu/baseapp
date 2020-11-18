@@ -1,0 +1,33 @@
+{{append . "moreScripts" "/public/js/social/follow.js"}}
+
+{{set . "action" "profile/followers"}}
+
+{{template "header.html" .}}
+
+{{template "profile/header.html" .}}
+
+<h3>Followers</h3>
+
+{{ if .followerProfiles }}
+
+	{{range .followerProfiles}}
+
+		{{template "profile/summary.html" .}}
+
+	{{end}}
+
+	{{if eq (len .followerProfiles) 50}}
+
+		<p>
+			<a id="nextPage" href="{{url "Profile.Followers" .profile.UserName .nextPage}}">Next Page &raquo;</a>
+		</p>
+
+	{{end}}
+
+{{ else }}
+
+	<p><em>No followers</em></p>
+
+{{ end }}
+
+{{template "footer.html" .}}

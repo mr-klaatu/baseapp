@@ -1,0 +1,40 @@
+{{set . "title" "Remove Post"}}
+
+{{set . "action" "post/remove"}}
+
+{{template "header.html" .}}
+
+<h2>Remove Post</h2>
+
+<hr>
+
+<div class="form-group col-sm-12">
+	<form action="{{url "Post.Delete" .user.UserName .post.PostId}}" method="POST" class="form-horizontal" role="form">
+		<p>Are you sure you want to remove this post?</p>
+
+		<div class="alert alert-danger">
+			<p><strong>Warning</strong>: This action cannot be undone!</strong></p>
+
+			<hr>
+
+			<div class="form-group">
+				<div class="col-sm-12">
+					<input type="submit" class="btn btn-primary" value="Delete Post">
+					<a href="{{url "Post.Show" .user.UserName .post.PostId}}" type="submit" class="btn btn-default">Cancel</a>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>
+
+<hr>
+
+<p>
+	<a href="{{url "Post.Show" .user.UserName .post.PostId}}">View this post</a>
+</p>
+
+<p>
+	<a href="{{url "Post.Edit" .user.UserName .post.PostId}}">Edit this post</a>
+</p>
+
+{{template "footer.html" .}}

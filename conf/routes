@@ -1,0 +1,58 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+module:testrunner
+module:jobs
+
+# Important: If new static routes are added below they must also be added
+# to `UserNameBlacklistRegex` in app/models/profile.go.
+
+GET     /                                       Application.Index
+GET     /about                                  Application.About
+GET     /contact                                Application.Contact
+GET     /search                                 Application.Search
+GET     /todesktop                              Application.SwitchToDesktop
+GET     /tomobile                               Application.SwitchToMobile
+
+GET     /account                                Account.Index
+GET     /account/register                       Account.Register
+POST    /account/register                       Account.SaveUser
+GET     /account/confirm/:token                 Account.ConfirmEmail
+GET     /account/login                          Account.Login
+POST    /account/login                          Account.LoginAccount
+GET     /account/recover                        Account.Recover
+POST    /account/recover                        Account.RetrieveAccount
+GET     /account/reset/:token                   Account.PasswordReset
+GET     /account/logout                         Account.Logout
+
+POST    /account/checkemail                     Account.CheckEmail
+POST    /account/checkusername                  Account.CheckUserName
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/*filepath                       Static.Serve("public")
+GET     /favicon.ico                            Static.Serve("public/images","favicon.png")
+
+# Put catch-all username matchers last in routing list (lowest priority)
+GET     /:username                              Profile.Show
+GET     /:username/edit                         Profile.Settings
+POST    /:username/edit                         Profile.UpdateSettings
+GET     /:username/edit/password                Profile.Password
+POST    /:username/edit/password                Profile.UpdatePassword
+GET     /:username/follow                       Profile.FollowUser
+GET     /:username/followers                    Profile.Followers
+GET     /:username/followers/:page              Profile.Followers
+GET     /:username/following                    Profile.Following
+GET     /:username/following/:page              Profile.Following
+
+GET     /:username/post/add                     Post.Create
+POST    /:username/post/add                     Post.Save
+GET     /:username/post/:id                     Post.Show
+GET     /:username/post/:id/edit                Post.Edit
+POST    /:username/post/:id/edit                Post.Update
+GET     /:username/post/:id/remove              Post.Remove
+POST    /:username/post/:id/remove              Post.Delete
+GET     /:username/post/:id/like                Post.Like
+
+# Catch all
+#*       /:controller/:action                    :controller.:action
